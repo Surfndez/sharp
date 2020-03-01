@@ -45,6 +45,17 @@ matrix:
         - sudo docker exec sharp apk add build-base git python2 --update-cache
       install: sudo docker exec sharp sh -c "npm install --unsafe-perm"
       script: sudo docker exec sharp sh -c "npm test"
+    - name: "Linux ARMv7 (glibc 2.29+) - Node.js 10"
+      arch: arm64
+      os: linux
+      dist: bionic
+      language: minimal
+      before_install:
+        - sudo docker run -dit --name sharp --env CI --volume "${PWD}:/mnt/sharp" --workdir /mnt/sharp arm32v7/debian:bullseye
+        - sudo docker exec sharp apt-get update
+        - sudo docker exec sharp apt-get install -y build-essential git python2 nodejs npm
+      install: sudo docker exec sharp sh -c "npm install --unsafe-perm"
+      script: sudo docker exec sharp sh -c "npm test"
     - name: "Linux ARM64v8 (glibc 2.29+) - Node.js 10"
       arch: arm64
       os: linux
